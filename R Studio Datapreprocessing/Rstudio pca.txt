@@ -1,0 +1,17 @@
+DataPreprocessing <- read_excel("C:/Users/trc/Downloads/DataPreprocessing.xlsx")
+View(DataPreprocessing)
+DataPreprocessing$Age <- ifelse(is.na(DataPreprocessing$Age),ave(DataPreprocessing$Age, FUN = function(x) mean(x, na.rm = TRUE)),DataPreprocessing$Age)
+DataPreprocessing$Income <- ifelse(is.na(DataPreprocessing$Income),ave(DataPreprocessing$Income, FUN = function(x) mean(x, na.rm = TRUE)), DataPreprocessing$Income)
+x <- 1:3
+x[1] <- NA
+mean(x)
+mean(x, na.rm = T)
+DataPreprocessing$Region = factor(DataPreprocessing$Region,levels = c("India", "Brazil", "USA"),labels = c(1, 2, 3))
+DataPreprocessing$'Online Shopper' = factor(DataPreprocessing$'Online Shopper',levels = c("No", "Yes"),labels = c(0, 1))
+install.packages('caTools')
+library(caTools)
+split = sample.split(DataPreprocessing$`Online Shopper`,SplitRatio = 0.2)
+training_set = subset(DataPreprocessing, split == TRUE)
+test_set = subset(DataPreprocessing, split == FALSE)
+training_set[,2:3] = scale(training_set[,2:3])
+test_set[,2:3] = scale(test_set[,2:3])
